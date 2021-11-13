@@ -1,0 +1,32 @@
+[user]
+	email = david@nutting.dev
+	name = David Nutting
+	signingKey = 6C1DBFE3AF5C71020B3A6A2F71924AF7D12FBC0B
+	useConfigOnly = true
+[core]
+    eol = native
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[commit]
+	gpgSign = true
+	verbose = true
+[tag]
+	forceSignAnnotated = true
+[gpg]
+	program = gpg
+[includeIf "gitdir:~/dev/nuttingd/"]
+    path = ~/.gitconfig.nuttingd
+#[includeIf "gitdir:~/dev/xyz/"]
+#    path = ~/.gitconfig.xyz
+[color]
+	ui = true
+[diff-so-fancy]
+	first-run = false
+[init]
+	defaultBranch = "main"
+[pull]
+	ff = only
+[diff "sopsdiffer"]
+	textconv = sops -d
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+

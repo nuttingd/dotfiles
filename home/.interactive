@@ -1,0 +1,64 @@
+# ~/.interactive
+# A start-up script meant for interactive shells. It is sourced by other
+# interactive shells: .bashrc and .zshrc, so it must be compatible.
+
+source ~/.functions
+verbose_log "Loading .interactive"
+
+# Load common environment configuration
+source $HOME/.environment
+
+# tell pinentry to use this interative shell
+if exists_env 'TTY'; then
+    # zsh has TTY, and this won't break p10k: https://unix.stackexchange.com/a/608921/438809
+    export GPG_TTY=$TTY
+else
+    export GPG_TTY=$(tty)
+fi
+
+# get friendly shell name to use for evals below, i.e. 'zsh' (not /bin/zsh)
+shell_name=$(shell)
+
+# iterm2 shell integration
+iterm_shell_int_path="$HOME/.iterm2_shell_integration.$shell_name"
+exists $iterm_shell_int_path && source $iterm_shell_int_path
+export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
+
+# fzf
+fzf_source_path="$HOME/.fzf.$shell_name"
+exists $fzf_source_path && source $fzf_source_path
+
+# nvm
+nvm_completions_path="${HOMEBREW_PREFIX}/opt/nvm/etc/bash_completion.d/nvm"
+exists $nvm_completions_path && source $nvm_completions_path
+
+# github-cli completions
+has_command gh && eval "$(gh completion -s $shell_name)"
+
+# stern completions
+has_command stern && eval "$(stern --completion $shell_name)"
+
+# direnv magic
+has_command direnv && eval "$(direnv hook $shell_name)"
+
+# poetry (python package manager)
+poetry_path="$HOME/.poetry"
+exists_dir $poetry_path && source $poetry_path/env
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+nvm_path="${HOMEBREW_PREFIX}/opt/nvm/nvm.sh"
+exists $nvm_path && source $nvm_path
+
+# nodenv
+has_command nodenv && eval "$(nodenv init -)"
+
+# z
+z_path="${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
+exists $z_path && source $z_path
+
+# SDKMAN! This must be at the end of the file for sdkman to work!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+exists "${SDKMAN_DIR}/bin/sdkman-init.sh" && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+
+interactive_loaded=$$

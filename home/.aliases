@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# aliases
+# This file must be compatible w/ all shells! (Unless you want to start using 
+# multiple alias files again...)
+
+# productivity
+alias edf="bash -c 'cd ~/.dotfiles; vim'"
+alias notes="bash -c 'cd ~/notes; vim'"
+
+# ls
+alias ll="ls -l"
+alias la="ls -la"
+alias llR="ls -lR"
+alias laR="ls -laR"
+alias lt="tree -L 1"
+alias lta="tree -a -L 1"
+
+# git
+alias gfa="git fetch --all"
+alias gla="git log --all --oneline --abbrev-commit --decorate --graph"
+alias gl="git log --oneline --abbrev-commit --decorate --graph"
+alias gs="git status"
+alias gss="git status --short"
+alias gd="git diff"
+alias gdcs="git diff --compact-summary"
+alias gds="git diff --staged"
+alias gdscs="git diff --staged --compact-summary"
+alias gpr="git pull --rebase"
+alias gp="git pull --ff-only"
+
+# docker
+alias dcu="docker-compose up"
+alias dcud="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcdv="docker-compose down -v"
+
+# aws
+# consider using this: https://github.com/blimmer/zsh-aws-vault
+function prodwarn { 
+  echo "CAUTION: Logging into production."
+}
+
+alias avl="unset AWS_VAULT; aws-vault login"
+alias avld="avl dev"
+alias avlp="prodwarn && avl prod"
+alias ave="unset AWS_VAULT; aws-vault exec"
+alias aved="ave dev"
+alias avep="prodwarn && ave prod"
+
+# dev
+alias gw="./gradlew"
+
+# timestamps
+alias cpd="date +%Y-%m-%d | pbcopy"
+alias cpts="date +%Y-%m-%dT%H:%M:%S%z | pbcopy"
+alias cptsutc="date -u +%Y-%m-%dT%H:%M:%SZ | pbcopy"
+alias cpuuid="uuidgen | tr \"[:upper:]\" \"[:lower:]\" | pbcopy"
+

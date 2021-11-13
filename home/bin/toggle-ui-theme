@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+source $HOME/.functions
+
+ui_theme_file=$HOME/.ui_theme
+default_ui_theme=dark
+
+if ! exists $ui_theme_file; then
+  # init .ui_theme with default of "dark"
+  # This script isn't smart enough to default to the system theme at first. Possible future improvement
+  verbose_log "Creating $ui_theme_file with default $default_ui_theme"
+  echo "$default_ui_theme" > $ui_theme_file
+fi
+
+ui_theme=$(cat $ui_theme_file)
+verbose_log "Current theme: $ui_theme"
+
+if [[ $ui_theme == "light" ]]; then
+  echo "dark" > $ui_theme_file
+elif [[ $ui_theme == "dark" ]]; then
+  echo "light" > $ui_theme_file
+else
+  echoerr "$ui_theme_file is not valid: $ui_theme. Valid choices: light | dark"
+  exit 1
+fi
+new_theme=$(cat $ui_theme_file)
+verbose_log "New theme: $new_theme"
+
+apply-ui-theme

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+source $HOME/.functions
+
+if has_os osx; then
+  if ! exists $HOME/.ui_theme; then
+    # init .ui_theme with default of "dark"
+    echo "dark" > $HOME/.ui_theme
+  fi
+
+  ui_theme=$(cat $HOME/.ui_theme)
+
+  if [[ $ui_theme == "light" ]]; then
+    dark_mode_on="false"
+  elif [[ $ui_theme == "dark" ]]; then
+    dark_mode_on="true"
+  else
+    echoerr ".ui_theme is not valid: $ui_theme. Valid choices: light | dark"
+    exit 1
+  fi
+
+  verbose_log "Setting UI theme to $ui_theme"
+  osascript -e "tell app \"System Events\" to tell appearance preferences to set dark mode to $dark_mode_on"
+  it2prof $ui_theme
+else
+  echoerr "$0 is only supported by osx at the moment"
+fi

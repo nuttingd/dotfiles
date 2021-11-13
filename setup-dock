@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if ! command -v dockutil &>/dev/null; then
+    echo "dockutil not installed";
+    exit 1
+fi
+
+function add_to_dock {
+  local application_path=$1
+  test -d "${application_path}" && dockutil --add "${application_path}"
+}
+
+dockutil --remove all
+dockutil --add "/Applications" --view grid --display folder
+dockutil --add "~/Downloads" --view fan --display stack
+
+# Icons are inserted in this order
+add_to_dock "/System/Applications/Launchpad.app"
+add_to_dock "/System/Applications/System Preferences.app"
+add_to_dock "/System/Applications/Utilities/Activity Monitor.app"
+add_to_dock "/System/Applications/Utilities/Screenshot.app"
+add_to_dock "/System/Applications/Calendar.app"
+add_to_dock "/Applications/GitKraken.app"
+add_to_dock "/Applications/Spotify.app"
+add_to_dock "/Applications/Pocket Casts.app"
+add_to_dock "/Applications/Sublime Text.app"
+add_to_dock "/Applications/Visual Studio Code.app"
+add_to_dock "/Applications/iTerm.app"
+add_to_dock "/Applications/Firefox.app"
+

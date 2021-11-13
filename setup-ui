@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Display full POSIX path as Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+# Expand save panel by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+# Disable the warning before emptying the Trash
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+# Empty Trash securely by default
+defaults write com.apple.finder EmptyTrashSecurely -bool true
+
+# Show the ~/Library folder
+chflags nohidden ~/Library
+
+# Check for software updates daily, not just once per week
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+
+# Remove recent apps from dock
+defaults write com.apple.dock show-recents -bool TRUE #FALSE
+
+# Set the icon size of Dock items
+defaults write com.apple.dock tilesize -int 90
+
+# Remove the auto-hiding Dock delay
+defaults write com.apple.dock autohide-delay -float 0
+
+# Remove the animation when hiding/showing the Dock
+defaults write com.apple.dock autohide-time-modifier -float .25
+
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -bool true
+
+# Set position to left side
+defaults write com.apple.Dock orientation -string "bottom"
+
+# Enable repeating keys
+defaults write -g ApplePressAndHoldEnabled 0
+defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
+defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
+
+# Enable "full keyboard access" (tab between all controls on a window)
+defaults write -g AppleKeyboardUIMode -int 3
+

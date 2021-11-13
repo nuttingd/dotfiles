@@ -1,0 +1,36 @@
+{
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "coc.preferences.formatOnType": true,
+
+  // This doesn't play nice with AutoSave (slows to a crawl)
+  // It also interferes with coding when a change to scoping/outlining is half
+  // done, and you exit INSERT mode: It attempts to reformat the broken code,
+  // causing code to rearrange itself.
+  // Trying it out for a bit again, seems okay so far.
+  "coc.preferences.formatOnSaveFiletypes": [
+    "go",
+    "python",
+    "markdown",
+    "javascript",
+    "typescript",
+    "json",
+    "jsonc"
+  ],
+
+  "coc.source.file.ignoreHidden": false,
+  "prettier.printWidth": 80,
+  "prettier.proseWrap": "always",
+  "codeLens.enable": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.checkCurrentLine": true,
+  "suggest.timeout": 5000,
+  "suggest.asciiCharactersOnly": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
+  "python.formatting.provider": "black",
+  "languageserver": {}
+}

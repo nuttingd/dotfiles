@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby -W0
+
+class IncomingData
+  def self.get
+    if !ENV["PIPING"]
+      get_from_commands
+    else
+      #this is for shimming in fixtures
+      get_from_pipe
+    end
+  end
+
+  def self.get_from_pipe
+    return @incoming_data if @incoming_data
+    @incoming_data = ""
+    while x= gets
+      @incoming_data = "#{@incoming_data}#{x}"
+    end
+    return @incoming_data
+  end
+
+  def self.app_script(application)
+    ['on run argv',
+     "if application \"#{application}\" is running then",
+        "tell application \"#{application}\"",
+          'set myTrack to name of current track',
+          'set myArtist to artist of current track',
+          'set info to myArtist & " - " & myTrack',
+          'if player state is paused then',
+            'set icon to "⏸"',
+          'else if player state is playing then',
+            'set icon to "▶️"',
+          'else',
+            'set icon to ""',
+          'end if',
+          'set info to icon & "  " & info & " 🎧"',
+          'return info',
+        'end tell',
+      "end if",
+    'end run'].map {|x| " -e '#{x}'"}.join("")
+  end
+
+  def self.spotify
+    @spotify ||= `osascript #{app_script("Spotify")}`
+  end
+
+  def self.get_from_commands
+    return spotify
+  end
+end
+
+def incoming_data
+  IncomingData.get
+end
+
+def lines
+  incoming_data.split("\n") || []
+end
+
+def line(num)
+  lines[num] || ""
+end
+
+def spotify_data_at_line(num)
+  line(num).split(":").last.strip
+end
+
+if line(0) != ""
+  if ARGV[0] == "artist"
+    puts line(0).split("-")[0].strip
+  elsif ARGV[0] == "song"
+    puts line(0).split("-")[1].strip
+  else
+    puts line(0) if line(0) != ""
+  end
+end

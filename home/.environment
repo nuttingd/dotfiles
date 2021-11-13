@@ -1,0 +1,61 @@
+# ~/.environment: shell-agnostic environment initialization, sourced by all shells, including non-interactive shells
+# NO COMMAND OUTPUT ALLOWED HERE
+
+if [[ ! -z "$environment_loaded" ]]; then
+  verbose_log ".environment is already loaded. To force, unset environment_loaded"
+  return 0
+fi
+
+# functions
+source $HOME/.functions
+verbose_log "Loading .environment"
+
+source $HOME/.aliases
+
+# brew vars; used below, keep near top
+if has_command brew; then
+  eval $(brew shellenv)
+else
+  verbose_log "'brew' was not found in the PATH. Attempting to locate based on known paths"
+  if has_os linux; then
+    linux_brew_home_path="$HOME/.linuxbrew"
+    linux_brew_system_path="/home/linuxbrew/.linuxbrew"
+    exists_dir $linux_brew_home_path && eval $($linux_brew_home_path/bin/brew shellenv)
+    exists_dir $linux_brew_system_path && eval $($linux_brew_system_path/bin/brew shellenv)
+  elif has_os osx; then
+    osx_brew_path=/opt/homebrew
+    exists_dir $osx_brew_path && eval $($osx_brew_path/bin/brew shellenv)
+  fi
+  if ! has_command brew; then
+    verbose_log "There was a problem setting the brew shell vars"
+  fi
+fi
+
+# misc vars
+export OS_TYPE=`os_type`
+export EDITOR='nvim'
+export VISUAL='nvim'
+export TERM="xterm-256color"
+
+# bin PATHs
+add_path "/usr/local/bin"
+add_path "$HOME/bin"
+
+# go
+export GOPATH=$HOME/go
+add_path "$GOPATH/bin"
+
+# krew
+add_path "$HOME/.krew/bin"
+
+# notes scripts
+notes_dir_bin="$HOME/notes/.bin"
+exists_dir $notes_dir_bin && add_path $notes_dir_bin
+
+# python (unversioned) (brew install python)
+unversioned_python_path="${HOMEBREW_PREFIX}/opt/python@3.9/libexec/bin"
+exists_dir $unversioned_python_path && add_path $unversioned_python_path
+python38_path="${HOMEBREW_PREFIX}/opt/python@3.8/bin"
+exists_dir $python38_path && add_path $python38_path
+
+environment_loaded=$$

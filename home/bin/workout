@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""
+For use with crontab, i.e.:
+~~ During working hours, at 10 'til the top of the hour ~~~
+crontab -e
+50 08-17 * * * zsh -ic 'notify `workout`'
+"""
+import random
+
+workouts = [
+    "25 pushups",
+    "50 crunches",
+    "50 air squats",
+    "50 lunges",
+    "25 squats with medicine ball",
+    "10 curls, 25 lunges",
+    "10 dumbbell rows",
+]
+
+workout = random.choice(workouts)
+print(f"Stop what you're doing! Do {workout} 🏋️")

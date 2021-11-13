@@ -1,0 +1,8 @@
+.env
+.envrc
+
+private/
+
+.mypy_cache/
+.DS_Store
+

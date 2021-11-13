@@ -1,0 +1,40 @@
+# Borrowed heavily from: <https://github.com/kinbiko/dotfiles/blob/master/ideavimrc>
+# See here for action list: <https://gist.github.com/nuttingd/37a4478f1bcd4e0f3f245670833aca08>
+
+# use what I can from my .vimrc
+source ~/.vimrc
+
+# the rest are ideavim specific / overrides
+set clipboard+=ideaput
+set ideajoin
+set visualbell
+set noerrorbells
+set surround
+
+let mapleader = " "
+" maplocalleader doesn't work...
+let maplocalleader = ','
+
+" edit this file
+nnoremap <leader>ev :e ~/.ideavimrc<CR>
+
+" Jump back and forth between tags
+nnoremap <leader>] :action GotoDeclaration<CR>
+nnoremap <leader>[ :action Back<CR>
+
+" Fuzzy find file by filename in the current project
+nnoremap <leader><leader> :action SearchEverywhere<CR>
+
+" maplocalleader doesn't work...
+nnoremap ,rn :action RenameElement<CR>
+
+" emulate NERDTree
+nnoremap <C-O> :action ActivateProjectToolWindow<CR>
+nnoremap <C-P> :action GotoFile<CR>
+nnoremap ]b :action NextTab<CR>
+nnoremap [b :action PreviousTab<CR>
+
+nnoremap <leader>b :action Switcher<CR>
+nnoremap gr :action ShowUsages<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
