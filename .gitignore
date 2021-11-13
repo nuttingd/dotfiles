@@ -2,7 +2,7 @@
 .envrc
 
 private/
+Brewfile.lock.json
 
 .mypy_cache/
 .DS_Store
-
