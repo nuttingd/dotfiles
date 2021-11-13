@@ -39,6 +39,9 @@ if has_command brew && prompt_continue -y "Do you want to install packages with 
   brew upgrade
   echo "Installing new packages"
   brew bundle
+
+  # install fzf key bindings and completions, without touching .zshrc
+  $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
 fi
 
 if has_os osx && prompt_continue -y "Do you want to install iTerm2 shell integration tools?"; then
