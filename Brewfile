@@ -1,4 +1,5 @@
 brew "awscli"
+brew "aws-vault"
 brew "bash-completion"
 brew "bash"
 brew "chamber"
