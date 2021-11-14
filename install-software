@@ -57,6 +57,11 @@ if prompt_continue -y 'Do you want to install Python tools?'; then
   python3 -m pip install rope
 fi
 
+if prompt_continue -y 'Do you want to install Kubernetes tools?'; then
+  echo "Installing helm-secrets"
+  helm plugin install https://github.com/jkroepke/helm-secrets --version v3.10.0
+fi
+
 if prompt_continue -y 'Do you want to install (neo)vim tools?'; then
   echo "Installing vim tools"
   # vim-plug
