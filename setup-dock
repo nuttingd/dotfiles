@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 if ! command -v dockutil &>/dev/null; then
-    echo "dockutil not installed";
+    echo "dockutil not installed"
     exit 1
 fi
 
 function add_to_dock {
-  local application_path=$1
-  test -d "${application_path}" && dockutil --add "${application_path}"
+    local application_path=$1
+    test -d "${application_path}" && dockutil --add "${application_path}"
 }
 
 dockutil --remove all
@@ -27,4 +27,3 @@ add_to_dock "/Applications/Sublime Text.app"
 add_to_dock "/Applications/Visual Studio Code.app"
 add_to_dock "/Applications/iTerm.app"
 add_to_dock "/Applications/Firefox.app"
-

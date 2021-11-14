@@ -3,14 +3,14 @@
 # tmux status bar utility
 # -----------------------
 
-function main(){
+function main() {
     local side="$1"
     local sep="$2"
     shift 2
     local cmd="$@"
-    local cmd_output=`$cmd`
-    [[ -z "$cmd_output" ]] && return 0;
-    [[ "$side" == "l" ]] && echo " $cmd_output $sep"
-    [[ "$side" == "r" ]] && echo "$sep $cmd_output "
+    local cmd_output=$($cmd)
+    [[ -z $cmd_output ]] && return 0
+    [[ $side == "l" ]] && echo " $cmd_output $sep"
+    [[ $side == "r" ]] && echo "$sep $cmd_output "
 }
 main "$@"

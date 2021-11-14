@@ -40,8 +40,7 @@ defaults write com.apple.Dock orientation -string "bottom"
 # Enable repeating keys
 defaults write -g ApplePressAndHoldEnabled 0
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
-defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
+defaults write -g KeyRepeat -int 2         # normal minimum is 2 (30 ms)
 
 # Enable "full keyboard access" (tab between all controls on a window)
 defaults write -g AppleKeyboardUIMode -int 3
-

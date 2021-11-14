@@ -2,9 +2,9 @@
 source $HOME/.functions
 
 if ! exists $HOME/.ui_theme; then
-  echoerr ".ui_theme missing:defaulting to dark"
-  ui_theme="dark"
+    echoerr ".ui_theme missing:defaulting to dark"
+    ui_theme="dark"
 else
-  ui_theme=$(cat $HOME/.ui_theme)
-  printf $ui_theme
+    ui_theme=$(cat $HOME/.ui_theme)
+    printf $ui_theme
 fi

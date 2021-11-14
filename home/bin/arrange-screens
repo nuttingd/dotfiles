@@ -5,28 +5,34 @@ source $HOME/.functions
 as1=$HOME/bin/arrange-screens-1
 as2=$HOME/bin/arrange-screens-2
 
-exists $as1 || { echo "$as1 doesn't exist"; exit 1; } 
-exists $as2 || { echo "$as2 doesn't exist"; exit 1; }
+exists $as1 || {
+    echo "$as1 doesn't exist"
+    exit 1
+}
+exists $as2 || {
+    echo "$as2 doesn't exist"
+    exit 1
+}
 
 arrange() {
- local curSlot=$as1
- 
- while true; do
-   printf "Trying $curSlot\n"
-   $curSlot
-   printf "Did that help? [Y/n]"
-   read itWorked
-   [[ -z "$itWorked" ]] && itWorked=Y
-   if [[ "y" == "$itWorked" ]] || [[ "Y" == "$itWorked" ]]; then
-     printf "Great!\n"
-     exit 0
-   fi
-   if [[ "$curSlot" == "$as1" ]]; then
-     curSlot=$as2
-   else 
-     curSlot=$as1
-   fi
- done
+    local curSlot=$as1
+
+    while true; do
+        printf "Trying $curSlot\n"
+        $curSlot
+        printf "Did that help? [Y/n]"
+        read itWorked
+        [[ -z $itWorked ]] && itWorked=Y
+        if [[ "y" == "$itWorked" ]] || [[ "Y" == "$itWorked" ]]; then
+            printf "Great!\n"
+            exit 0
+        fi
+        if [[ $curSlot == "$as1" ]]; then
+            curSlot=$as2
+        else
+            curSlot=$as1
+        fi
+    done
 
 }
 
