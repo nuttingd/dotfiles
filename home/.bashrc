@@ -6,7 +6,7 @@
 [ -z "$PS1" ] && return
 
 # Source common interactive shell magic
-[[ -f "$HOME/.interactive" ]] && source $HOME/.interactive
+[[ -f "$HOME/.interactive" ]] && source "$HOME"/.interactive
 
 # Put bash-specific interactive shell config below ---------------
 

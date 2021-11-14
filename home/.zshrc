@@ -12,14 +12,14 @@ p10k_instant_prompt_path="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
-    fzf 
-    kubectl 
-    docker 
-    docker-compose 
-    minikube 
-    tmux-vim-integration 
-    zsh-autosuggestions 
-    zsh-syntax-highlighting 
+    fzf
+    kubectl
+    docker
+    docker-compose
+    minikube
+    tmux-vim-integration
+    zsh-autosuggestions
+    zsh-syntax-highlighting
     zsh-vim-mode)
 [[ -d "$ZSH" ]] && source $ZSH/oh-my-zsh.sh
 # Source common interactive shell magic (put this after oh-my-zsh)
@@ -48,4 +48,3 @@ p10k_path="$HOME/.p10k.zsh"
 [[ -f "$p10k_path" ]] && source $p10k_path
 
 zshrc_loaded=$$
-
