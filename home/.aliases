@@ -17,6 +17,7 @@ alias lt="tree -L 1"
 alias lta="tree -a -L 1"
 
 # git
+alias gaa="git add -A"
 alias gfa="git fetch --all"
 alias gla="git log --all --oneline --abbrev-commit --decorate --graph"
 alias gl="git log --oneline --abbrev-commit --decorate --graph"

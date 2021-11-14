@@ -75,6 +75,7 @@ cask "pocket-casts"
 cask "postman"
 cask "rectangle"
 cask "spotify"
+cask "tunnelblick"
 cask "visual-studio-code"
 
 tap "jakehilborn/jakehilborn"
