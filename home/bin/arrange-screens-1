@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-display_resolution=2304x1296
+display_resolution=3360x1890
+#display_resolution=2304x1296
 displayplacer "id:D0FC9940-5D50-0E36-FD69-ADE8C5BEF852 res:${display_resolution} hz:60 color_depth:8 scaling:on origin:(0,0) degree:0" "id:610CA122-B70B-1B57-DF76-97957E8F705A res:1344x840 hz:59 color_depth:8 scaling:on origin:(-1344,959) degree:0" "id:3C5E7D3D-A070-ED0B-92DE-BD06B96DE8E8 res:${display_resolution} hz:60 color_depth:8 scaling:on origin:(2304,0) degree:0"
