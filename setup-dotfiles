@@ -8,31 +8,34 @@ function create_dotfile_link() {
     local target_filename=$1
     local source_filename=$2
     [[ -z $source_filename ]] && source_filename=${target_filename}
-    local source_path="$(pwd -P)/${source_filename}"
-    local target_path=~/"${target_filename}" # keep ~ outside of quotes, or else! ;)
+    local source_path
+    source_path="$(pwd -P)/${source_filename}"
+    local target_path="$HOME/${target_filename}"
 
     [[ -d $source_path ]] && echo "Skipping directory: $source_path" && return 0
     [[ ! -f $source_path ]] && echo "Invalid source_path: $source_path" && return 1
 
     echo "Symlinking ${source_path} to ${target_path}"
-    local base_dir=$(dirname "$target_path")
+    local base_dir
+    base_dir=$(dirname "$target_path")
     if [[ ! -d $base_dir ]]; then
         echo "Creating non-existent dir: $base_dir"
-        mkdir -p $base_dir
+        mkdir -p "$base_dir"
     fi
     ln -sf "$source_path" "$target_path"
-    ln -fs $source_path $target_path
 }
 
-cd home
-for f in ./*; do
-    create_dotfile_link $f
-done
 
-for f in ./**/*; do
-    create_dotfile_link $f
-done
-cd ..
+( # sub-shell for cd to home
+    cd home || exit 1
+    for f in *; do
+        create_dotfile_link "$f"
+    done
+
+    for f in **/*; do
+        create_dotfile_link "$f"
+    done
+)
 
 echo "Symlinking this repo to ~/.dotfiles"
 # must use -n to avoid creating a nested link if this is run more than once
@@ -43,7 +46,7 @@ echo "Symlinking nvim to ~/bin/vim"
 if command -v nvim &>/dev/null; then
     nvim_path=$(which nvim)
     target_path=$HOME/bin/vim
-    ln -sf ${nvim_path} ${target_path}
+    ln -sf "${nvim_path}" "${target_path}"
     echo "Symlinked ${nvim_path} to ${target_path}"
 else
     echo "nvim not found. Can't create symlink."
@@ -52,9 +55,9 @@ fi
 # this file is required by my .vimrc setup. I wish I didn't have to put it here
 echo "Creating .ui_theme"
 if [[ ! -f "$HOME/.ui_theme" ]]; then
-    echo 'dark' >$HOME/.ui_theme
+    echo 'dark' >"$HOME"/.ui_theme
     echo "created ~/.ui_theme"
 else
-    echo "~/.ui_theme already exists"
+    echo "$HOME/.ui_theme already exists"
 fi
-echo "ui_theme value: $(cat $HOME/.ui_theme)"
+echo "ui_theme value: $(cat "$HOME"/.ui_theme)"
