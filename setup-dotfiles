@@ -20,7 +20,7 @@ function create_dotfile_link() {
         echo "Creating non-existent dir: $base_dir"
         mkdir -p $base_dir
     fi
-    return 0
+    ln -sf "$source_path" "$target_path"
     ln -fs $source_path $target_path
 }
 
