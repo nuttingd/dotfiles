@@ -35,6 +35,10 @@ function create_dotfile_link() {
     for f in **/*; do
         create_dotfile_link "$f"
     done
+
+    for f in **/**/*; do
+        create_dotfile_link "$f"
+    done
 )
 
 echo "Symlinking this repo to ~/.dotfiles"
