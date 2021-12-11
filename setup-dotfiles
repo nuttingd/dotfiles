@@ -4,6 +4,47 @@
 GLOBIGNORE=".:.."
 shopt -s dotglob
 
+prompt_continue() {
+    local prompt
+    local default=n
+    while [[ $# > 0 ]]; do
+        case $1 in
+        -y | --yes)
+            default=y
+            shift
+            ;;
+        -s | --silent)
+            local silent=1
+            shift
+            ;;
+        --)
+            shift
+            prompt="$prompt$@ "
+            break
+            ;;
+        *)
+            prompt="$prompt$1 "
+            shift
+            ;;
+        esac
+    done
+
+    printf "${prompt}[${default}]"
+    read user_input
+    local action=$default
+
+    case $user_input in
+    y | yes | Y | Yes | YES) action=y ;;
+    n | no | N | No | NO) action=n ;;
+    esac
+
+    if [[ "n" == "$action" ]]; then
+        [[ -z $silent ]] && echo "Aborted."
+        return 1
+    fi
+    return 0
+}
+
 function create_dotfile_link() {
     local target_filename=$1
     local source_filename=$2
@@ -25,6 +66,9 @@ function create_dotfile_link() {
     ln -sf "$source_path" "$target_path"
 }
 
+# ------------
+# creating symlinks
+# ------------
 
 ( # sub-shell for cd to home
     cd home || exit 1
@@ -55,6 +99,21 @@ if command -v nvim &>/dev/null; then
 else
     echo "nvim not found. Can't create symlink."
 fi
+
+# ------------
+# copying templates
+# ------------
+echo "Copying templates... Choosing [y] will overwrite any changes that have been made since the last time the template was copied."
+
+if prompt_continue -y "do you want to copy: templates/.gitconfig?"; then
+    cp $HOME/.gitconfig $HOME/.gitconfig.old.$(date +"%s")
+    rm $HOME/.gitconfig
+    cp templates/.gitconfig $HOME/.gitconfig
+fi
+
+# ------------
+# misc
+# ------------
 
 # this file is required by my .vimrc setup. I wish I didn't have to put it here
 echo "Creating .ui_theme"

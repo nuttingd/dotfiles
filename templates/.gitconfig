@@ -25,4 +25,7 @@
 	textconv = sops -d
 [url "git@github.com:"]
 	insteadOf = https://github.com/
-
+[includeIf "gitdir:~/dev/nuttingd/"]
+    path = ~/.gitconfig.nuttingd
+#[includeIf "gitdir:~/dev/xyz/"]
+#    path = ~/.gitconfig.xyz
