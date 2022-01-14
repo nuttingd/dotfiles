@@ -126,8 +126,27 @@ function op_signin {
 
 # notification bubble
 function notify {
-    message=$@
-    osascript -e "display notification \"${message}\" with title \"📟\""
+    local title="Scripted Notification"
+    local message=""
+    while [[ $# > 0 ]]; do
+        case $1 in
+        -t | --title)
+            shift
+            title=$1
+            shift
+            ;;
+        --)
+            shift
+            message="$message$@ "
+            break
+            ;;
+        *)
+            message="$message$1 "
+            shift
+            ;;
+        esac
+    done
+    osascript -e "display notification \"${message}\" with title \"${title}\""
 }
 
 # utc to local
