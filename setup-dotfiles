@@ -1,49 +1,10 @@
 #!/usr/bin/env bash
+script_dir=`dirname $0`
+source $script_dir/home/.functions
 
 # ensure globs match .files and .folders
 GLOBIGNORE=".:.."
 shopt -s dotglob
-
-prompt_continue() {
-    local prompt
-    local default=n
-    while [[ $# > 0 ]]; do
-        case $1 in
-        -y | --yes)
-            default=y
-            shift
-            ;;
-        -s | --silent)
-            local silent=1
-            shift
-            ;;
-        --)
-            shift
-            prompt="$prompt$@ "
-            break
-            ;;
-        *)
-            prompt="$prompt$1 "
-            shift
-            ;;
-        esac
-    done
-
-    printf "${prompt}[${default}]"
-    read user_input
-    local action=$default
-
-    case $user_input in
-    y | yes | Y | Yes | YES) action=y ;;
-    n | no | N | No | NO) action=n ;;
-    esac
-
-    if [[ "n" == "$action" ]]; then
-        [[ -z $silent ]] && echo "Aborted."
-        return 1
-    fi
-    return 0
-}
 
 function create_dotfile_link() {
     local target_filename=$1
@@ -111,6 +72,12 @@ if prompt_continue -y "do you want to copy: templates/.gitconfig?"; then
     cp templates/.gitconfig $HOME/.gitconfig
 fi
 
+if prompt_continue -y "do you want to copy: templates/.ssh/config?"; then
+    mkdir -p $HOME/.ssh
+    cp $HOME/.ssh/config $HOME/.ssh/config.old.$(date +"%s")
+    rm $HOME/.ssh/config
+    cp templates/.ssh/config.$OS_TYPE $HOME/.ssh/config
+fi
 # ------------
 # misc
 # ------------
