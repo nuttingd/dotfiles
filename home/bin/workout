@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 """
 For use with crontab, i.e.:
-~~ During working hours, at 10 'til the top of the hour ~~~
+~~ During working hours, at HH:20 and HH:50 ~~
 crontab -e
-50 08-17 * * * zsh -ic 'notify `workout`'
+20,50 08-17 * * * zsh -ic 'notify -t "Time to work out!" $(workout)'
 """
 import random
 
 workouts = [
     "25 pushups",
+    "25 box jumps",
     "50 crunches",
+    "50 supermans",
     "50 air squats",
     "50 lunges",
     "25 squats with medicine ball",
     "10 curls, 25 lunges",
+    "3x10 curls",
     "10 dumbbell rows",
+    "20 iron hand grip reps, each hand",
+    "10 slow reps of rubber finger extensions, each hand",
 ]
 
 workout = random.choice(workouts)
