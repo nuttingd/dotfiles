@@ -30,6 +30,8 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'chaoren/vim-wordmotion'
 Plug 'qpkorr/vim-bufkill'
+Plug 'fatih/vim-go'
+Plug 'towolf/vim-helm'
 
 "UI Theming
 Plug 'junegunn/seoul256.vim'

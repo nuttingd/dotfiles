@@ -303,6 +303,9 @@ call SetMultilineCommand()
 set cmdheight=3
 set shortmess=ac
 
+set modeline
+set modelines=5
+
 " Autosave on
 let g:auto_save = 1
 
