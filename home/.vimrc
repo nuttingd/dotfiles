@@ -11,19 +11,10 @@ source ~/.vim/plugins.vim
 " Theme
 set termguicolors
 
-" ayu
 let ui_theme = system('get-ui-theme')
-
-colorscheme ayu
-let ayucolor=ui_theme  " light|mirage|dark
-let g:airline_theme = 'ayu_' . ayucolor " ayu_light|ayu_dark
-" others
+colorscheme seoul256-light
+let g:airline_theme = 'seoul256'
 "set background=light
-
-"background is transparent, nice for transparent terminal window
-"This doesn't work... need to put this into a colorscheme, search google, it's
-"a thing
-hi Normal guibg=NONE ctermbg=NONE
 
 " Prefer multi-line command and search (with history)
 let g:multiline_command = 1
