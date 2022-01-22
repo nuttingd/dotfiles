@@ -21,6 +21,7 @@
 	defaultBranch = "main"
 [pull]
 	ff = only
+	rebase = true
 [diff "sopsdiffer"]
 	textconv = sops -d
 [url "git@github.com:"]
