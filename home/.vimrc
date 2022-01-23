@@ -12,9 +12,10 @@ source ~/.vim/plugins.vim
 set termguicolors
 
 let ui_theme = system('get-ui-theme')
-colorscheme seoul256-light
+colorscheme seoul256
 let g:airline_theme = 'seoul256'
-"set background=light
+" seoul256 can be controled by set background=light|dark; no need to use seoul256-light directly
+let &background = ui_theme 
 
 " Prefer multi-line command and search (with history)
 let g:multiline_command = 1
