@@ -3,7 +3,8 @@
 For use with crontab, i.e.:
 ~~ During working hours, at HH:20 and HH:50 ~~
 crontab -e
-20,50 08-17 * * * zsh -ic 'notify -t "Time to work out!" $(workout)'
+SHELL=/usr/local/bin/zsh
+20,50 08-17 * * * source $HOME/.environment; notify -t "Time to work out!" $(workout);
 """
 import random
 
