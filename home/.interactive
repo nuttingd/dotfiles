@@ -8,6 +8,15 @@ verbose_log "Loading .interactive"
 # Load common environment configuration
 source $HOME/.environment
 
+# Set ITerm profile based on UI_THEME
+if [[ -f ~/.ui_theme ]]; then
+    ui_theme=$(cat ~/.ui_theme)
+    exists_env 'ITERM_PROFILE' && ! exists_env 'TMUX' && { 
+        echo "Setting ITerm profile: $ui_theme"; 
+        it2prof $ui_theme;
+    }
+fi
+
 # tell pinentry to use this interative shell
 if exists_env 'TTY'; then
     # zsh has TTY, and this won't break p10k: https://unix.stackexchange.com/a/608921/438809
