@@ -35,7 +35,6 @@ fi
 export OS_TYPE=$(os_type)
 export EDITOR='nvim'
 export VISUAL='nvim'
-export TERM="xterm-256color"
 
 # bin PATHs
 add_path "/usr/local/bin"
