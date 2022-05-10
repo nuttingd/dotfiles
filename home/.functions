@@ -5,6 +5,29 @@ if [[ -n $functions_loaded ]]; then
     return 0
 fi
 
+function arrange-displays {
+  if [[ -d ~/.arrange-displays ]]
+  then
+      echo 'Reminder: the ''displayplacer list'' command will display the arguments needed to apply the current display.'
+      echo 'Use this to create more configurations: displayplacer list | grep displayplacer > ~/.arrange-displays/<name-of-new-configuration>'
+      echo
+      echo 'Pick a display configuration (Ctrl-C to quit)'
+      select i in $(ls ~/.arrange-displays)
+      do
+          if [[ $i == "q" ]]
+          then
+              echo break
+              break
+          fi
+          echo
+          echo "Applying configuration: $i"
+          bash "$HOME/.arrange-displays/$i"
+          echo
+          echo Done. Ctrl-C to quit, if you like it.
+      done
+  fi
+}
+
 function os_type {
     case "$OSTYPE" in
     solaris*) echo "solaris" ;;

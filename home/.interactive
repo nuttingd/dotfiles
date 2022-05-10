@@ -11,7 +11,7 @@ source $HOME/.environment
 # Set ITerm profile based on UI_THEME
 if [[ -f ~/.ui_theme ]]; then
     ui_theme=$(cat ~/.ui_theme)
-    exists_env 'ITERM_PROFILE' && ! exists_env 'TMUX' && { 
+    exists_env 'ITERM_PROFILE' && ! exists_env 'TMUX' &&  ! exists_env 'DOTFILES_IGNORE_ITERM_UI_THEME' && { 
         echo "Setting ITerm profile: $ui_theme"; 
         it2prof $ui_theme;
     }

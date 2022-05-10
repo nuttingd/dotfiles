@@ -31,16 +31,17 @@ alias gpr="git pull --rebase"
 alias gp="git pull --ff-only"
 
 # docker
-alias dcu="docker-compose up"
-alias dcud="docker-compose up -d"
-alias dcd="docker-compose down"
-alias dcdv="docker-compose down -v"
+alias dcu="docker compose up"
+alias dcud="docker compose up -d"
+alias dcd="docker compose down"
+alias dcdv="docker compose down -v"
 
 # aws
 # consider using this: https://github.com/blimmer/zsh-aws-vault
 function prodwarn {
     echo "CAUTION: Logging into production."
 }
+
 
 alias avl="unset AWS_VAULT; aws-vault login"
 alias avld="avl dev"
@@ -57,3 +58,7 @@ alias cpd="date +%Y-%m-%d | pbcopy"
 alias cpts="date +%Y-%m-%dT%H:%M:%S%z | pbcopy"
 alias cptsutc="date -u +%Y-%m-%dT%H:%M:%SZ | pbcopy"
 alias cpuuid="uuidgen | tr \"[:upper:]\" \"[:lower:]\" | pbcopy"
+
+alias ad="arrange-displays"
+
+
