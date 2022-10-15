@@ -23,10 +23,12 @@ function arrange-displays {
           echo "Applying configuration: $i"
           bash "$HOME/.arrange-displays/$i"
           echo
-          echo Done. Ctrl-C to quit, if you like it.
+          echo Done. Ctrl-C to quit, if you like it. RETURN to display choices again.
       done
   fi
 }
+
+alias placer=arrange-displays
 
 function os_type {
     case "$OSTYPE" in
