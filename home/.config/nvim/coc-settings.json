@@ -16,10 +16,15 @@
     "json",
     "jsonc"
   ],
+  "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
+  "eslint.run": "onSave",
+  "eslint.autoFixOnSave": true,
+  "prettier.eslintIntegration": true,
+  //"prettier.printWidth": 80,
+  //"prettier.proseWrap": "always",
+  "prettier.disableLanguages": ["javascript", "typescript"],
 
   "coc.source.file.ignoreHidden": false,
-  "prettier.printWidth": 80,
-  "prettier.proseWrap": "always",
   "codeLens.enable": true,
   "diagnostic.virtualText": true,
   "diagnostic.checkCurrentLine": true,
@@ -29,8 +34,6 @@
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"]
   },
-  "eslint.autoFixOnSave": true,
-  "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
   "python.formatting.provider": "black",
   "languageserver": {}
 }

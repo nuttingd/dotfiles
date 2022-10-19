@@ -32,6 +32,7 @@ alias gdscs="git diff --staged --compact-summary"
 alias gp="git pull"
 alias gpr="git pull --rebase"
 alias gpff="git pull --ff-only"
+alias grom="git rebase origin/main"
 
 # docker
 alias dcu="docker compose up"

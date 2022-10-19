@@ -46,5 +46,6 @@ Plug 'ntk148v/vim-horizon'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install() } }
 Plug 'sheerun/vim-polyglot'
 Plug 'pechorin/any-jump.vim'
+Plug 'puremourning/vimspector'
 
 call plug#end()
