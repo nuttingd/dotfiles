@@ -44,3 +44,7 @@ defaults write -g KeyRepeat -int 2         # normal minimum is 2 (30 ms)
 
 # Enable "full keyboard access" (tab between all controls on a window)
 defaults write -g AppleKeyboardUIMode -int 3
+
+# Turn off automatic insertion of period after double space
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
+
