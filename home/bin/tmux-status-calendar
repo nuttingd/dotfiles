@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# tmux-status-calendar: Upcoming meeting indicator
+
+# Configuration
+CALENDAR_NAME="Main Calendar"
+
+# Nerd Font icons
+ICON_WATCH=$'\uf017'    # 
+ICON_SOON=$'\uf252'     #  (hourglass half)
+ICON_NOW=$'\uf251'      #  (hourglass start)
+
+# Color
+FG_COLOR="colour147"
+
+BIN_PATH="$HOME/bin/tmux-cal-bin"
+
+# Check if binary exists
+[[ ! -x "$BIN_PATH" ]] && exit 0
+
+# Get events from compiled Swift binary
+output=$("$BIN_PATH" "$CALENDAR_NAME" 2>/dev/null)
+
+[[ -z "$output" ]] && exit 0
+
+# Parse events and find current/upcoming
+current_event=""
+current_end=""
+upcoming_event=""
+upcoming_start=""
+
+while IFS='|' read -r name start_mins end_mins; do
+    [[ -z "$name" ]] && continue
+    
+    # Current event: started (start <= 0) and not finished (end > 0)
+    if [[ $start_mins -le 0 && $end_mins -gt 0 ]]; then
+        if [[ -z "$current_event" ]] || [[ $end_mins -lt $current_end ]]; then
+            current_event="$name"
+            current_end="$end_mins"
+        fi
+    fi
+    
+    # Upcoming event: hasn't started yet (start > 0)
+    if [[ $start_mins -gt 0 ]]; then
+        if [[ -z "$upcoming_event" ]] || [[ $start_mins -lt $upcoming_start ]]; then
+            upcoming_event="$name"
+            upcoming_start="$start_mins"
+        fi
+    fi
+done <<< "$output"
+
+format_duration() {
+    local mins=$1
+    if [[ $mins -lt 1 ]]; then
+        echo "<1m"
+    elif [[ $mins -ge 60 ]]; then
+        echo "$(( mins / 60 ))h"
+    else
+        echo "${mins}m"
+    fi
+}
+
+# Output based on state
+if [[ -n "$current_event" ]]; then
+    echo -n "#[fg=$FG_COLOR]$ICON_NOW $(format_duration "$current_end") left#[fg=default]"
+elif [[ -n "$upcoming_event" ]]; then
+    if [[ $upcoming_start -le 5 ]]; then
+        echo -n "#[fg=$FG_COLOR]$ICON_SOON $(format_duration "$upcoming_start")#[fg=default]"
+    else
+        echo -n "#[fg=$FG_COLOR]$ICON_WATCH $(format_duration "$upcoming_start")#[fg=default]"
+    fi
+fi
+# Output nothing if no meetings within 30 minutes

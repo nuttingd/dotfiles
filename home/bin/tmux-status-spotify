@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+# tmux-status-spotify: Spotify now playing with background progress bar
+
+# Icons (Nerd Font)
+ICON_PLAY=$'\uf025'   #  (headphones for playing)
+ICON_PAUSE=$'\uf04c'  # 
+ICON_MUSIC=$'\uf04b'  #  (play icon at end)
+
+# Colors
+FG_COLOR="colour117"
+BG_PLAYED="colour24"
+BG_REMAINING="colour239"
+
+# Check if Spotify is running
+if ! pgrep -x "Spotify" > /dev/null; then
+    exit 0
+fi
+
+# Get Spotify info via AppleScript
+read -r state artist track position duration < <(osascript -e '
+tell application "Spotify"
+    if player state is stopped then
+        return ""
+    end if
+    set pState to player state as string
+    set pArtist to artist of current track
+    set pTrack to name of current track
+    set pPos to player position
+    set pDur to duration of current track
+    return pState & "\t" & pArtist & "\t" & pTrack & "\t" & pPos & "\t" & pDur
+end tell
+' 2>/dev/null | tr '\t' ' ' | { read -r s a t p d; echo "$s" "$a" "$t" "$p" "$d"; })
+
+# Exit if no data
+[[ -z "$state" ]] && exit 0
+
+# Get full output with proper parsing
+spotify_data=$(osascript -e '
+tell application "Spotify"
+    if player state is stopped then
+        return ""
+    end if
+    set pState to player state as string
+    set pArtist to artist of current track
+    set pTrack to name of current track
+    set pPos to player position as integer
+    set pDur to duration of current track as integer
+    return pState & "|" & pArtist & "|" & pTrack & "|" & pPos & "|" & pDur
+end tell
+' 2>/dev/null)
+
+[[ -z "$spotify_data" ]] && exit 0
+
+IFS='|' read -r state artist track position duration <<< "$spotify_data"
+
+# Set icon based on state
+if [[ "$state" == "playing" ]]; then
+    icon="$ICON_PLAY"
+else
+    icon="$ICON_PAUSE"
+fi
+
+# Truncate text
+max_len=30
+song_text="$artist - $track"
+if [[ ${#song_text} -gt $max_len ]]; then
+    song_text="${song_text:0:$((max_len-3))}..."
+fi
+
+# Format time
+format_time() {
+    local secs=$1
+    printf "%d:%02d" $((secs / 60)) $((secs % 60))
+}
+
+pos_sec=$((position))
+dur_sec=$((duration / 1000))
+
+time_display=" $(format_time $pos_sec)/$(format_time $dur_sec) $ICON_MUSIC"
+full_text="${song_text}${time_display}"
+
+# Calculate progress split point
+if [[ $dur_sec -gt 0 ]]; then
+    progress=$((pos_sec * 100 / dur_sec))
+    split_point=$((${#full_text} * progress / 100))
+else
+    split_point=0
+fi
+
+# Split text for background coloring
+played="${full_text:0:$split_point}"
+remaining="${full_text:$split_point}"
+
+# Build output with tmux color codes
+output="$icon "
+[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED]${played}#[fg=default,bg=default]"
+[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING]${remaining}#[fg=default,bg=default]"
+
+echo -n "$output"

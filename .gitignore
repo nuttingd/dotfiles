@@ -6,3 +6,6 @@ Brewfile.lock.json
 
 .mypy_cache/
 .DS_Store
+
+# Compiled binaries
+home/bin/tmux-cal-bin

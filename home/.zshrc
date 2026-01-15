@@ -49,3 +49,19 @@ p10k_path="$HOME/.p10k.zsh"
 [[ -f "$p10k_path" ]] && source $p10k_path
 
 zshrc_loaded=$$
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/davidnutting/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# opencode
+export PATH=/Users/davidnutting/.opencode/bin:$PATH
+
+# bun completions
+[ -s "/Users/davidnutting/.bun/_bun" ] && source "/Users/davidnutting/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

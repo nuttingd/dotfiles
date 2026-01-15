@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# tmux-status-moon: Current moon phase
+
+# Color
+FG_COLOR="colour229"
+
+# Calculate moon phase
+# Based on the synodic month (29.53 days)
+# Known new moon: Jan 6, 2000
+
+known_new_moon=946944000  # Unix timestamp for Jan 6, 2000
+synodic_month=2551443     # 29.530588853 days in seconds
+now=$(date +%s)
+
+days_since=$(( (now - known_new_moon) % synodic_month ))
+cycle_position=$(echo "scale=4; $days_since / $synodic_month" | bc)
+
+# Convert to phase index (0-7)
+phase_index=$(echo "scale=0; $cycle_position * 8 / 1" | bc)
+phase_index=$((phase_index % 8))
+
+# Moon phase emojis
+phases=("🌑" "🌒" "🌓" "🌔" "🌕" "🌖" "🌗" "🌘")
+
+echo -n "#[fg=$FG_COLOR]${phases[$phase_index]}#[fg=default]"

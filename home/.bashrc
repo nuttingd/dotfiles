@@ -14,3 +14,8 @@
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && source /usr/local/etc/profile.d/bash_completion.sh
 
 bashrc_loaded=$$
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/davidnutting/.lmstudio/bin"
+# End of LM Studio CLI section
+

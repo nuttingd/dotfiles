@@ -15,3 +15,8 @@
 [[ -f "$HOME/.bashrc" ]] && source $HOME/.bashrc
 
 bash_profile_loaded=$$
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/davidnutting/.lmstudio/bin"
+# End of LM Studio CLI section
+

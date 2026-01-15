@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+# tmux-status: Modular tmux status bar orchestrator
+# Usage: tmux-status component:ttl [component:ttl ...]
+# Example: tmux-status spotify:1 calendar:60 moon:3600 clock:1
+
+CACHE_DIR="$HOME/.cache/tmux-status"
+SCRIPT_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"
+
+mkdir -p "$CACHE_DIR"
+
+get_component() {
+    local component="$1"
+    local ttl="$2"
+    local cache_file="$CACHE_DIR/$component"
+    local now
+    now=$(date +%s)
+    
+    # Check cache
+    if [[ -f "$cache_file" ]]; then
+        local cached_at
+        cached_at=$(head -1 "$cache_file")
+        local age=$((now - cached_at))
+        
+        if [[ $age -lt $ttl ]]; then
+            # Return cached content (skip first line which is timestamp)
+            tail -n +2 "$cache_file"
+            return
+        fi
+    fi
+    
+    # Find and run component script
+    local script=""
+    for path in "$SCRIPT_DIR/tmux-status-$component" "$HOME/bin/tmux-status-$component"; do
+        if [[ -x "$path" ]]; then
+            script="$path"
+            break
+        fi
+    done
+    
+    if [[ -z "$script" ]]; then
+        return
+    fi
+    
+    # Run component and cache result
+    local output
+    output=$("$script" 2>/dev/null)
+    
+    # Write cache (timestamp on first line, content after)
+    {
+        echo "$now"
+        echo -n "$output"
+    } > "$cache_file"
+    
+    echo -n "$output"
+}
+
+# Process arguments and build output
+output=""
+separator=" "
+
+for arg in "$@"; do
+    # Parse component:ttl
+    component="${arg%%:*}"
+    ttl="${arg##*:}"
+    
+    # Default TTL if not specified
+    [[ "$component" == "$ttl" ]] && ttl=1
+    
+    result=$(get_component "$component" "$ttl")
+    
+    if [[ -n "$result" ]]; then
+        if [[ -n "$output" ]]; then
+            output="${output}${separator}"
+        fi
+        output="${output}${result}"
+    fi
+done
+
+echo -n "$output"
