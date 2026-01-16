@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# tmux-status-weather: Current weather display
+# Uses wttr.in for data (no API key needed)
+
+# Location (customize this)
+LOCATION="Portland,OR"
+LOCATION_SHORT="PDX"
+
+# Colors (powerline style, matching left side)
+FG_COLOR="colour236"
+BG_COLOR="colour109"
+
+# Cache settings (weather doesn't change often)
+CACHE_FILE="$HOME/.cache/tmux-status/weather"
+CACHE_TTL=1800  # 30 minutes
+
+# Icon (Nerd Font)
+ICON_WEATHER=$'\uf0c2'  # cloud icon
+
+mkdir -p "$(dirname "$CACHE_FILE")"
+
+# Check cache
+if [[ -f "$CACHE_FILE" ]]; then
+    cached_at=$(head -1 "$CACHE_FILE")
+    now=$(date +%s)
+    age=$((now - cached_at))
+
+    if [[ $age -lt $CACHE_TTL ]]; then
+        tail -n +2 "$CACHE_FILE"
+        exit 0
+    fi
+fi
+
+# Fetch weather (format: temp and condition)
+weather=$(curl -s --max-time 3 "wttr.in/${LOCATION}?format=%t+%C&u" 2>/dev/null | head -1)
+
+# Fallback if fetch fails
+if [[ -z "$weather" || "$weather" == *"Unknown"* || "$weather" == *"error"* ]]; then
+    # Return cached if available, even if stale
+    if [[ -f "$CACHE_FILE" ]]; then
+        tail -n +2 "$CACHE_FILE"
+    fi
+    exit 0
+fi
+
+# Clean up the output (remove leading +)
+weather="${weather#+}"
+
+# Build output
+output="#[fg=$FG_COLOR,bg=$BG_COLOR,bold] $ICON_WEATHER $LOCATION_SHORT $weather "
+
+# Cache result
+{
+    date +%s
+    echo -n "$output"
+} > "$CACHE_FILE"
+
+echo -n "$output"
