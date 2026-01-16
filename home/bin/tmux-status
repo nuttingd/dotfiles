@@ -16,15 +16,15 @@ BAR_BG="colour236"
 # Component background colors (for powerline transitions)
 # Entry color is used for the incoming chevron, exit color for outgoing
 declare -A COMPONENT_BG=(
-    [calendar]="colour61"
-    [spotify]="colour24"
-    [clock]="colour239"
+    [calendar]="colour135"
+    [spotify]="colour39"
+    [clock]="colour75"
     [moon]=""  # No background, blends with bar
 )
 
 # Components with different exit colors (e.g., progress bars)
 declare -A COMPONENT_BG_EXIT=(
-    [spotify]="colour239"  # Spotify ends with "remaining" color
+    [spotify]="colour33"  # Spotify ends with "remaining" color
 )
 
 mkdir -p "$CACHE_DIR"

@@ -7,9 +7,9 @@ ICON_PLAY=$'\uf025'   #  (headphones for playing)
 ICON_PAUSE=$'\uf04c'  #
 
 # Colors (powerline style with progress bar)
-FG_COLOR="colour117"
-BG_PLAYED="colour24"     # Dark blue for played portion
-BG_REMAINING="colour239" # Gray for remaining portion
+FG_COLOR="colour236"
+BG_PLAYED="colour39"     # Cyan for played portion
+BG_REMAINING="colour33"  # Bright blue for remaining portion
 
 # Check if Spotify is running
 if ! pgrep -x "Spotify" > /dev/null; then
@@ -73,9 +73,9 @@ fi
 played="${full_text:0:$split_point}"
 remaining="${full_text:$split_point}"
 
-# Build output - played portion in dark blue, remaining in gray
+# Build output - played portion in cyan, remaining in blue
 output=""
-[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED]${played}"
-[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING]${remaining}"
+[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED,bold]${played}"
+[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING,bold]${remaining}"
 
 echo -n "$output"
