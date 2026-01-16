@@ -10,8 +10,9 @@ ICON_WATCH=$'\uf017'    #
 ICON_SOON=$'\uf252'     #  (hourglass half)
 ICON_NOW=$'\uf251'      #  (hourglass start)
 
-# Color
-FG_COLOR="colour147"
+# Colors (powerline style)
+FG_COLOR="colour255"
+BG_COLOR="colour61"
 
 BIN_PATH="$HOME/bin/tmux-cal-bin"
 
@@ -60,14 +61,14 @@ format_duration() {
     fi
 }
 
-# Output based on state
+# Output based on state (with powerline background)
 if [[ -n "$current_event" ]]; then
-    echo -n "#[fg=$FG_COLOR]$ICON_NOW $(format_duration "$current_end") left#[fg=default]"
+    echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR] $ICON_NOW $(format_duration "$current_end") left "
 elif [[ -n "$upcoming_event" ]]; then
     if [[ $upcoming_start -le 5 ]]; then
-        echo -n "#[fg=$FG_COLOR]$ICON_SOON $(format_duration "$upcoming_start")#[fg=default]"
+        echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR] $ICON_SOON $(format_duration "$upcoming_start") "
     else
-        echo -n "#[fg=$FG_COLOR]$ICON_WATCH $(format_duration "$upcoming_start")#[fg=default]"
+        echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR] $ICON_WATCH $(format_duration "$upcoming_start") "
     fi
 fi
 # Output nothing if no meetings within 30 minutes

@@ -1,11 +1,31 @@
 #!/usr/bin/env bash
 
-# tmux-status: Modular tmux status bar orchestrator
+# tmux-status: Modular tmux status bar orchestrator with powerline separators
 # Usage: tmux-status component:ttl [component:ttl ...]
-# Example: tmux-status spotify:1 calendar:60 moon:3600 clock:1
+# Example: tmux-status calendar:60 spotify:1 clock:1 moon:3600
 
 CACHE_DIR="$HOME/.cache/tmux-status"
 SCRIPT_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"
+
+# Powerline separator (left-pointing chevron for status-right)
+SEP=$'\ue0b2'
+
+# Status bar background
+BAR_BG="colour236"
+
+# Component background colors (for powerline transitions)
+# Entry color is used for the incoming chevron, exit color for outgoing
+declare -A COMPONENT_BG=(
+    [calendar]="colour61"
+    [spotify]="colour24"
+    [clock]="colour239"
+    [moon]=""  # No background, blends with bar
+)
+
+# Components with different exit colors (e.g., progress bars)
+declare -A COMPONENT_BG_EXIT=(
+    [spotify]="colour239"  # Spotify ends with "remaining" color
+)
 
 mkdir -p "$CACHE_DIR"
 
@@ -15,20 +35,20 @@ get_component() {
     local cache_file="$CACHE_DIR/$component"
     local now
     now=$(date +%s)
-    
+
     # Check cache
     if [[ -f "$cache_file" ]]; then
         local cached_at
         cached_at=$(head -1 "$cache_file")
         local age=$((now - cached_at))
-        
+
         if [[ $age -lt $ttl ]]; then
             # Return cached content (skip first line which is timestamp)
             tail -n +2 "$cache_file"
             return
         fi
     fi
-    
+
     # Find and run component script
     local script=""
     for path in "$SCRIPT_DIR/tmux-status-$component" "$HOME/bin/tmux-status-$component"; do
@@ -37,44 +57,81 @@ get_component() {
             break
         fi
     done
-    
+
     if [[ -z "$script" ]]; then
         return
     fi
-    
+
     # Run component and cache result
     local output
     output=$("$script" 2>/dev/null)
-    
+
     # Write cache (timestamp on first line, content after)
     {
         echo "$now"
         echo -n "$output"
     } > "$cache_file"
-    
+
     echo -n "$output"
 }
 
-# Process arguments and build output
-output=""
-separator=" "
+# Collect all component outputs and their backgrounds
+declare -a components=()
+declare -a outputs=()
+declare -a backgrounds=()
 
 for arg in "$@"; do
     # Parse component:ttl
     component="${arg%%:*}"
     ttl="${arg##*:}"
-    
+
     # Default TTL if not specified
     [[ "$component" == "$ttl" ]] && ttl=1
-    
+
     result=$(get_component "$component" "$ttl")
-    
+
     if [[ -n "$result" ]]; then
-        if [[ -n "$output" ]]; then
-            output="${output}${separator}"
-        fi
-        output="${output}${result}"
+        components+=("$component")
+        outputs+=("$result")
+        backgrounds+=("${COMPONENT_BG[$component]:-}")
     fi
 done
+
+# Build powerline output
+output=""
+prev_bg=""
+
+for i in "${!components[@]}"; do
+    component="${components[$i]}"
+    content="${outputs[$i]}"
+    bg="${backgrounds[$i]}"
+
+    if [[ -n "$bg" ]]; then
+        # Component has a background - add powerline separator
+        if [[ -z "$prev_bg" ]]; then
+            # First component with bg, transition from bar background
+            output+="#[fg=$bg,bg=$BAR_BG]$SEP"
+        else
+            # Transition from previous component
+            output+="#[fg=$bg,bg=$prev_bg]$SEP"
+        fi
+        output+="$content"
+        # Use exit color if defined, otherwise use entry color
+        prev_bg="${COMPONENT_BG_EXIT[$component]:-$bg}"
+    else
+        # Component has no background (like moon)
+        if [[ -n "$prev_bg" ]]; then
+            # Close previous segment back to bar
+            output+="#[fg=$BAR_BG,bg=$prev_bg]$SEP#[fg=default,bg=default]"
+            prev_bg=""
+        fi
+        output+=" $content"
+    fi
+done
+
+# Close final segment if needed
+if [[ -n "$prev_bg" ]]; then
+    output+="#[fg=$BAR_BG,bg=$prev_bg]$SEP#[fg=default,bg=default]"
+fi
 
 echo -n "$output"

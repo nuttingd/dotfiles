@@ -2,10 +2,11 @@
 
 # tmux-status-clock: Date and time display
 
-# Color
+# Colors (powerline style)
 FG_COLOR="colour117"
+BG_COLOR="colour239"
 
 # Icon (Nerd Font)
-ICON_CLOCK=$'\uf017'  # 
+ICON_CLOCK=$'\uf017'  #
 
-echo -n "#[fg=$FG_COLOR]$ICON_CLOCK $(date '+%b %d %Y %l:%M %p %Z')#[fg=default]"
+echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR] $ICON_CLOCK $(date '+%b %d %Y %l:%M %p %Z') "

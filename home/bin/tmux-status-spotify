@@ -4,13 +4,12 @@
 
 # Icons (Nerd Font)
 ICON_PLAY=$'\uf025'   #  (headphones for playing)
-ICON_PAUSE=$'\uf04c'  # 
-ICON_MUSIC=$'\uf04b'  #  (play icon at end)
+ICON_PAUSE=$'\uf04c'  #
 
-# Colors
+# Colors (powerline style with progress bar)
 FG_COLOR="colour117"
-BG_PLAYED="colour24"
-BG_REMAINING="colour239"
+BG_PLAYED="colour24"     # Dark blue for played portion
+BG_REMAINING="colour239" # Gray for remaining portion
 
 # Check if Spotify is running
 if ! pgrep -x "Spotify" > /dev/null; then
@@ -18,24 +17,6 @@ if ! pgrep -x "Spotify" > /dev/null; then
 fi
 
 # Get Spotify info via AppleScript
-read -r state artist track position duration < <(osascript -e '
-tell application "Spotify"
-    if player state is stopped then
-        return ""
-    end if
-    set pState to player state as string
-    set pArtist to artist of current track
-    set pTrack to name of current track
-    set pPos to player position
-    set pDur to duration of current track
-    return pState & "\t" & pArtist & "\t" & pTrack & "\t" & pPos & "\t" & pDur
-end tell
-' 2>/dev/null | tr '\t' ' ' | { read -r s a t p d; echo "$s" "$a" "$t" "$p" "$d"; })
-
-# Exit if no data
-[[ -z "$state" ]] && exit 0
-
-# Get full output with proper parsing
 spotify_data=$(osascript -e '
 tell application "Spotify"
     if player state is stopped then
@@ -62,7 +43,7 @@ else
 fi
 
 # Truncate text
-max_len=30
+max_len=25
 song_text="$artist - $track"
 if [[ ${#song_text} -gt $max_len ]]; then
     song_text="${song_text:0:$((max_len-3))}..."
@@ -77,8 +58,8 @@ format_time() {
 pos_sec=$((position))
 dur_sec=$((duration / 1000))
 
-time_display=" $(format_time $pos_sec)/$(format_time $dur_sec) $ICON_MUSIC"
-full_text="${song_text}${time_display}"
+time_display=" $(format_time $pos_sec)/$(format_time $dur_sec)"
+full_text=" $icon $song_text$time_display "
 
 # Calculate progress split point
 if [[ $dur_sec -gt 0 ]]; then
@@ -92,9 +73,9 @@ fi
 played="${full_text:0:$split_point}"
 remaining="${full_text:$split_point}"
 
-# Build output with tmux color codes
-output="$icon "
-[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED]${played}#[fg=default,bg=default]"
-[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING]${remaining}#[fg=default,bg=default]"
+# Build output - played portion in dark blue, remaining in gray
+output=""
+[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED]${played}"
+[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING]${remaining}"
 
 echo -n "$output"
