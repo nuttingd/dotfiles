@@ -10,7 +10,8 @@
 
 source $HOME/.environment
 
-if command -v gpgconf &>/dev/null; then
+if [[ -z "$NO_USE_GPG_SSH_AGENT" ]] && command -v gpgconf &>/dev/null
+then
     gpgconf --launch gpg-agent
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi

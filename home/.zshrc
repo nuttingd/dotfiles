@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # sourced in interactive shells
 # if not running interactively, short circuit
 [ -z "$PS1" ] && return
@@ -23,6 +30,7 @@ plugins=(
     zsh-syntax-highlighting
     zsh-vim-mode)
 [[ -d "$ZSH" ]] && source $ZSH/oh-my-zsh.sh
+
 # Source common interactive shell magic (put this after oh-my-zsh)
 if [[ -f "$HOME/.interactive" ]]; then
     source $HOME/.interactive
@@ -49,19 +57,20 @@ p10k_path="$HOME/.p10k.zsh"
 [[ -f "$p10k_path" ]] && source $p10k_path
 
 zshrc_loaded=$$
-export PATH="$HOME/.local/bin:$PATH"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/davidnutting/.lmstudio/bin"
-# End of LM Studio CLI section
 
 
-# opencode
-export PATH=/Users/davidnutting/.opencode/bin:$PATH
+# Created by `pipx` on 2024-05-15 22:16:51
+export PATH="$PATH:/Users/davidnutting/.local/bin"
 
-# bun completions
-[ -s "/Users/davidnutting/.bun/_bun" ] && source "/Users/davidnutting/.bun/_bun"
+# for mobile dev
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+alias nv=/Applications/Neovide.app/Contents/MacOS/neovide
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+# Shell completion configuration for the Click Python package
+command -v mon > /dev/null 2>&1 && eval "$(_MON_COMPLETE=zsh_source mon)"

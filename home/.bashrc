@@ -19,3 +19,5 @@ bashrc_loaded=$$
 export PATH="$PATH:/Users/davidnutting/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Shell completion configuration for the Click Python package
+command -v mon >/dev/null 2>&1 && eval "$(_MON_COMPLETE=bash_source mon)"

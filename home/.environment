@@ -57,4 +57,9 @@ exists_dir $unversioned_python_path && add_path $unversioned_python_path
 python38_path="${HOMEBREW_PREFIX}/opt/python@3.8/bin"
 exists_dir $python38_path && add_path $python38_path
 
+
+# environment overrides
+environment_override_path="$HOME/.environment_override"
+exists "$environment_override_path" && source "$environment_override_path"
+
 environment_loaded=$$
