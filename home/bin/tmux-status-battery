@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# tmux-status-battery: Battery level indicator
+
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
+# Icons (Nerd Font battery levels)
+ICON_FULL=$'\uf240'    #
+ICON_3Q=$'\uf241'      #
+ICON_HALF=$'\uf242'    #
+ICON_1Q=$'\uf243'      #
+ICON_EMPTY=$'\uf244'   #
+ICON_CHARGING=$'\uf0e7' #
+
+# Color
+FG_COLOR="$THEME_GREEN"
+
+# Get battery info (macOS)
+batt_info=$(pmset -g batt 2>/dev/null | tail -1)
+[[ -z "$batt_info" ]] && exit 0
+
+# Parse percentage
+pct=$(echo "$batt_info" | grep -o '[0-9]*%' | tr -d '%')
+[[ -z "$pct" ]] && exit 0
+
+# Check if charging
+charging=""
+if echo "$batt_info" | grep -q "AC Power\|charging\|charged"; then
+    charging="$ICON_CHARGING"
+fi
+
+# Select icon based on level
+if [[ $pct -ge 90 ]]; then
+    icon="$ICON_FULL"
+elif [[ $pct -ge 60 ]]; then
+    icon="$ICON_3Q"
+elif [[ $pct -ge 40 ]]; then
+    icon="$ICON_HALF"
+elif [[ $pct -ge 15 ]]; then
+    icon="$ICON_1Q"
+    FG_COLOR="$THEME_PEACH"
+else
+    icon="$ICON_EMPTY"
+    FG_COLOR="$THEME_PEACH"
+fi
+
+echo -n "#[fg=$FG_COLOR]${charging}${icon} ${pct}%#[fg=default]"

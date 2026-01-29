@@ -22,7 +22,8 @@ declare -A COMPONENT_BG=(
     [calendar]="$THEME_PINK"
     [spotify]="$THEME_SAPPHIRE"
     [clock]="$THEME_LAVENDER"
-    [moon]=""  # No background, blends with bar
+    [moon]=""      # No background, blends with bar
+    [battery]=""   # No background, blends with bar
 )
 
 # Components with different exit colors (e.g., progress bars)

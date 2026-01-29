@@ -144,7 +144,7 @@ set -g status-left "\
 #(~/bin/tmux-status-weather)#[fg=${THEME_GREEN},bg=${THEME_BASE}]"
 
 set -g status-right-length 200
-set -g status-right "#(~/bin/tmux-status calendar:60 spotify:1 clock:1 moon:3600)"
+set -g status-right "#(~/bin/tmux-status calendar:60 spotify:1 clock:1 moon:3600 battery:60)"
 ##############################
 
 # Active window - rounded/pill style
