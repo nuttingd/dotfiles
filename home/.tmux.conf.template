@@ -141,7 +141,7 @@ set -g status-left-length 85
 set -g status-left "\
 #[bg=${THEME_MAUVE},fg=${THEME_FG_DARK},bold] #(echo $USER) #[fg=${THEME_MAUVE},bg=${THEME_BLUE}]\
 #[fg=${THEME_FG_DARK},bold]  s:#S w:#I #[fg=${THEME_BLUE},bg=${THEME_GREEN}]\
-#(~/bin/tmux-status-weather)#[fg=${THEME_GREEN},bg=${THEME_BASE}]"
+#(~/bin/tmux-status-weather)#{?client_prefix,#[fg=${THEME_GREEN}#,bg=${THEME_PEACH}]#[fg=${THEME_FG_DARK}#,bg=${THEME_PEACH}#,bold]  #[fg=${THEME_PEACH}#,bg=${THEME_BASE}],#[fg=${THEME_GREEN}#,bg=${THEME_BASE}]}"
 
 set -g status-right-length 200
 set -g status-right "#(~/bin/tmux-status calendar:60 spotify:1 clock:1 moon:3600 battery:60)"
