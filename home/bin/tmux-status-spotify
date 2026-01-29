@@ -2,14 +2,17 @@
 
 # tmux-status-spotify: Spotify now playing with background progress bar
 
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
 # Icons (Nerd Font)
 ICON_PLAY=$'\uf025'   #  (headphones for playing)
 ICON_PAUSE=$'\uf04c'  #
 
-# Colors (powerline style with progress bar)
-FG_COLOR="colour236"
-BG_PLAYED="colour39"     # Cyan for played portion
-BG_REMAINING="colour33"  # Bright blue for remaining portion
+# Colors
+FG_COLOR="$THEME_FG_DARK"
+BG_PLAYED="$THEME_SAPPHIRE"
+BG_REMAINING="$THEME_BLUE"
 
 # Check if Spotify is running
 if ! pgrep -x "Spotify" > /dev/null; then

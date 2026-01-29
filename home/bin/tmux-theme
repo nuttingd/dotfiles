@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Catppuccin Mocha theme colors for tmux status bar
+# Source this file in component scripts: source "$(dirname "$0")/tmux-theme"
+
+# Base colors
+THEME_BASE="colour234"      # Background
+THEME_SURFACE0="colour236"
+THEME_SURFACE1="colour238"
+THEME_TEXT="colour251"
+
+# Accent colors
+THEME_MAUVE="colour177"     # Username
+THEME_BLUE="colour111"      # Session, active window
+THEME_TEAL="colour122"
+THEME_GREEN="colour120"     # Weather
+THEME_PINK="colour218"      # Calendar
+THEME_SAPPHIRE="colour117"  # Spotify played
+THEME_LAVENDER="colour147"  # Clock
+THEME_YELLOW="colour229"    # Moon
+THEME_PEACH="colour216"     # Alerts
+
+# Foreground for light backgrounds
+THEME_FG_DARK="colour234"

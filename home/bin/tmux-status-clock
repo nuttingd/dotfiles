@@ -2,9 +2,12 @@
 
 # tmux-status-clock: Date and time display
 
-# Colors (powerline style)
-FG_COLOR="colour236"
-BG_COLOR="colour75"
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
+# Colors
+FG_COLOR="$THEME_FG_DARK"
+BG_COLOR="$THEME_LAVENDER"
 
 # Icon (Nerd Font)
 ICON_CLOCK=$'\uf017'  #

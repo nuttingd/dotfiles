@@ -2,8 +2,11 @@
 
 # tmux-status-moon: Current moon phase
 
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
 # Color
-FG_COLOR="colour229"
+FG_COLOR="$THEME_YELLOW"
 
 # Calculate moon phase
 # Based on the synodic month (29.53 days)

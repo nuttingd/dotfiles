@@ -7,24 +7,27 @@
 CACHE_DIR="$HOME/.cache/tmux-status"
 SCRIPT_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"
 
+# Load theme colors
+source "$SCRIPT_DIR/tmux-theme"
+
 # Powerline separator (left-pointing chevron for status-right)
 SEP=$'\ue0b2'
 
 # Status bar background
-BAR_BG="colour236"
+BAR_BG="$THEME_BASE"
 
-# Component background colors (for powerline transitions)
+# Component background colors
 # Entry color is used for the incoming chevron, exit color for outgoing
 declare -A COMPONENT_BG=(
-    [calendar]="colour135"
-    [spotify]="colour39"
-    [clock]="colour75"
+    [calendar]="$THEME_PINK"
+    [spotify]="$THEME_SAPPHIRE"
+    [clock]="$THEME_LAVENDER"
     [moon]=""  # No background, blends with bar
 )
 
 # Components with different exit colors (e.g., progress bars)
 declare -A COMPONENT_BG_EXIT=(
-    [spotify]="colour33"  # Spotify ends with "remaining" color
+    [spotify]="$THEME_BLUE"
 )
 
 mkdir -p "$CACHE_DIR"

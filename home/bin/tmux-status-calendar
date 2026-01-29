@@ -2,17 +2,20 @@
 
 # tmux-status-calendar: Upcoming meeting indicator
 
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
 # Configuration
 CALENDAR_NAME="Main Calendar"
 
 # Nerd Font icons
-ICON_WATCH=$'\uf017'    # 
+ICON_WATCH=$'\uf017'    #
 ICON_SOON=$'\uf252'     #  (hourglass half)
 ICON_NOW=$'\uf251'      #  (hourglass start)
 
-# Colors (powerline style)
-FG_COLOR="colour236"
-BG_COLOR="colour135"
+# Colors
+FG_COLOR="$THEME_FG_DARK"
+BG_COLOR="$THEME_PINK"
 
 BIN_PATH="$HOME/bin/tmux-cal-bin"
 

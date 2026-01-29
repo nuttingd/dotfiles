@@ -134,51 +134,51 @@ set-option -g status "on"
 set -g status-position bottom
 set -g status-interval 1
 set -g status-justify centre
-set-option -g status-style bg=colour234,fg=colour251
+set-option -g status-style bg=${THEME_BASE},fg=${THEME_TEXT}
 
 # show host name and IP address on left side of status bar
 set -g status-left-length 85
 set -g status-left "\
-#[bg=colour177,fg=colour234,bold] #(echo $USER) #[fg=colour177,bg=colour111]\
-#[fg=colour234,bold]  s:#S w:#I #[fg=colour111,bg=colour120]\
-#(~/bin/tmux-status-weather)#[fg=colour120,bg=colour234]"
+#[bg=${THEME_MAUVE},fg=${THEME_FG_DARK},bold] #(echo $USER) #[fg=${THEME_MAUVE},bg=${THEME_BLUE}]\
+#[fg=${THEME_FG_DARK},bold]  s:#S w:#I #[fg=${THEME_BLUE},bg=${THEME_GREEN}]\
+#(~/bin/tmux-status-weather)#[fg=${THEME_GREEN},bg=${THEME_BASE}]"
 
 set -g status-right-length 200
 set -g status-right "#(~/bin/tmux-status calendar:60 spotify:1 clock:1 moon:3600)"
 ##############################
 
 # Active window - rounded/pill style
-set-window-option -g window-status-current-format "#[fg=colour111,bg=colour234]#[fg=colour234,bg=colour111,bold] #I:#W #[fg=colour111,bg=colour234]"
-set-window-option -g window-status-current-style bg=colour111,fg=colour234,bold
+set-window-option -g window-status-current-format "#[fg=${THEME_BLUE},bg=${THEME_BASE}]#[fg=${THEME_FG_DARK},bg=${THEME_BLUE},bold] #I:#W #[fg=${THEME_BLUE},bg=${THEME_BASE}]"
+set-window-option -g window-status-current-style bg=${THEME_BLUE},fg=${THEME_FG_DARK},bold
 
 # Inactive windows - subtle rounded style
-set-window-option -g window-status-format "#[fg=colour238,bg=colour234]#[fg=colour251,bg=colour238] #I:#W #[fg=colour238,bg=colour234]"
-set-window-option -g window-status-style bg=colour238,fg=colour251
+set-window-option -g window-status-format "#[fg=${THEME_SURFACE1},bg=${THEME_BASE}]#[fg=${THEME_TEXT},bg=${THEME_SURFACE1}] #I:#W #[fg=${THEME_SURFACE1},bg=${THEME_BASE}]"
+set-window-option -g window-status-style bg=${THEME_SURFACE1},fg=${THEME_TEXT}
 
 # Default window with an activity alert
-set-window-option -g window-status-activity-style bg=colour216,fg=colour234
+set-window-option -g window-status-activity-style bg=${THEME_PEACH},fg=${THEME_FG_DARK}
 
 # Set active pane border color
-set-option -g pane-active-border-style fg=colour111
+set-option -g pane-active-border-style fg=${THEME_BLUE}
 
 # Set inactive pane border color
-set-option -g pane-border-style fg=colour238
+set-option -g pane-border-style fg=${THEME_SURFACE1}
 
 # Message info
-set-option -g message-style bg=colour177,fg=colour234
+set-option -g message-style bg=${THEME_MAUVE},fg=${THEME_FG_DARK}
 
 # Writing commands inactive
-set-option -g message-command-style bg=colour177,fg=colour234
+set-option -g message-command-style bg=${THEME_MAUVE},fg=${THEME_FG_DARK}
 
 # Pane number display
-set-option -g display-panes-active-colour colour216
-set-option -g display-panes-colour colour236
+set-option -g display-panes-active-colour ${THEME_PEACH}
+set-option -g display-panes-colour ${THEME_SURFACE0}
 
 # Clock
-set-window-option -g clock-mode-colour colour117
+set-window-option -g clock-mode-colour ${THEME_SAPPHIRE}
 
 # Bell
-set-window-option -g window-status-bell-style bg=colour216,fg=colour234
+set-window-option -g window-status-bell-style bg=${THEME_PEACH},fg=${THEME_BASE}
 
 # Set the history limit so we get lots of scrollback.
 setw -g history-limit 50000000

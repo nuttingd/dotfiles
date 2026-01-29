@@ -3,13 +3,16 @@
 # tmux-status-weather: Current weather display
 # Uses wttr.in for data (no API key needed)
 
+# Load theme colors
+source "$(dirname "$0")/tmux-theme"
+
 # Location (customize this)
 LOCATION="Portland,OR"
 LOCATION_SHORT="PDX"
 
-# Colors (powerline style, matching left side)
-FG_COLOR="colour236"
-BG_COLOR="colour109"
+# Colors (using green - works well with dark text)
+FG_COLOR="$THEME_FG_DARK"
+BG_COLOR="$THEME_GREEN"
 
 # Cache settings (weather doesn't change often)
 CACHE_FILE="$HOME/.cache/tmux-status/weather"
