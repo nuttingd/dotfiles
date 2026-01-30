@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# tmux-status-slack: Slack unread message count
+
+# Check if Slack is installed
+if [[ ! -d "/Applications/Slack.app" ]]; then
+    exit 0
+fi
+
+# Get badge count from Slack using AppleScript
+# This reads the dock badge which shows unread count
+badge_count=$(osascript -e '
+tell application "System Events"
+    try
+        set badgeValue to value of attribute "AXStatusLabel" of UI element "Slack" of list 1 of process "Dock"
+        if badgeValue is not missing value then
+            return badgeValue
+        else
+            return "0"
+        end if
+    on error
+        return "0"
+    end try
+end tell
+' 2>/dev/null)
+
+# Clean up the badge count (remove any non-numeric characters except digits)
+badge_count=$(echo "$badge_count" | grep -Eo '[0-9]+' | head -1)
+
+# Exit if no badge count or it's 0
+if [[ -z "$badge_count" || "$badge_count" == "0" ]]; then
+    exit 0
+fi
+
+# Determine color based on unread count
+if [[ $badge_count -gt 50 ]]; then
+    FG_COLOR="colour203"  # Red - lots of messages
+elif [[ $badge_count -gt 10 ]]; then
+    FG_COLOR="colour229"  # Yellow - moderate
+else
+    FG_COLOR="colour117"  # Blue - few messages
+fi
+
+# Slack icon (Nerd Font)
+ICON=$'\uf198'  #
+
+echo -n "#[fg=$FG_COLOR]$ICON $badge_count#[fg=default]"
