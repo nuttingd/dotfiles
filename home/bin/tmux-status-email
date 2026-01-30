@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# tmux-status-email: Email unread message count
+
+# Check if Mail.app is installed (try both locations)
+if [[ ! -d "/System/Applications/Mail.app" ]] && [[ ! -d "/Applications/Mail.app" ]]; then
+    exit 0
+fi
+
+# Get unread count from Mail.app using AppleScript
+unread_count=$(osascript -e '
+tell application "Mail"
+    try
+        return unread count of inbox
+    on error
+        return 0
+    end try
+end tell
+' 2>/dev/null)
+
+# Clean up the count
+unread_count=$(echo "$unread_count" | grep -Eo '[0-9]+' | head -1)
+unread_count=${unread_count:-0}
+
+# Exit if no unread messages
+if [[ $unread_count -eq 0 ]]; then
+    exit 0
+fi
+
+# Determine color based on unread count
+if [[ $unread_count -gt 100 ]]; then
+    FG_COLOR="colour203"  # Red - lots of email
+elif [[ $unread_count -gt 50 ]]; then
+    FG_COLOR="colour229"  # Yellow - moderate
+else
+    FG_COLOR="colour117"  # Blue - manageable
+fi
+
+# Email icon (Nerd Font)
+ICON=$'\uf0e0'  #
+
+echo -n "#[fg=$FG_COLOR]$ICON $unread_count#[fg=default]"
