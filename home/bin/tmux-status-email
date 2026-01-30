@@ -27,16 +27,8 @@ if [[ $unread_count -eq 0 ]]; then
     exit 0
 fi
 
-# Determine color based on unread count
-if [[ $unread_count -gt 100 ]]; then
-    FG_COLOR="colour203"  # Red - lots of email
-elif [[ $unread_count -gt 50 ]]; then
-    FG_COLOR="colour229"  # Yellow - moderate
-else
-    FG_COLOR="colour117"  # Blue - manageable
-fi
-
 # Email icon (Nerd Font)
 ICON=$'\uf0e0'  #
 
-echo -n "#[fg=$FG_COLOR]$ICON $unread_count#[fg=default]"
+# Return plain text - orchestrator handles theming
+echo -n " $ICON $unread_count "

@@ -2,9 +2,6 @@
 
 # tmux-status-calendar: Upcoming meeting indicator
 
-# Load theme colors
-source "$(dirname "$0")/tmux-theme"
-
 # Configuration
 CALENDAR_NAME="Main Calendar"
 
@@ -12,10 +9,6 @@ CALENDAR_NAME="Main Calendar"
 ICON_WATCH=$'\uf017'    #
 ICON_SOON=$'\uf252'     #  (hourglass half)
 ICON_NOW=$'\uf251'      #  (hourglass start)
-
-# Colors
-FG_COLOR="$THEME_FG_DARK"
-BG_COLOR="$THEME_PINK"
 
 BIN_PATH="$HOME/bin/tmux-cal-bin"
 
@@ -35,7 +28,7 @@ upcoming_start=""
 
 while IFS='|' read -r name start_mins end_mins; do
     [[ -z "$name" ]] && continue
-    
+
     # Current event: started (start <= 0) and not finished (end > 0)
     if [[ $start_mins -le 0 && $end_mins -gt 0 ]]; then
         if [[ -z "$current_event" ]] || [[ $end_mins -lt $current_end ]]; then
@@ -43,7 +36,7 @@ while IFS='|' read -r name start_mins end_mins; do
             current_end="$end_mins"
         fi
     fi
-    
+
     # Upcoming event: hasn't started yet (start > 0)
     if [[ $start_mins -gt 0 ]]; then
         if [[ -z "$upcoming_event" ]] || [[ $start_mins -lt $upcoming_start ]]; then
@@ -64,14 +57,14 @@ format_duration() {
     fi
 }
 
-# Output based on state (with powerline background)
+# Return plain text - orchestrator handles theming
 if [[ -n "$current_event" ]]; then
-    echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR,bold] $ICON_NOW $(format_duration "$current_end") left "
+    echo -n " $ICON_NOW $(format_duration "$current_end") left "
 elif [[ -n "$upcoming_event" ]]; then
     if [[ $upcoming_start -le 5 ]]; then
-        echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR,bold] $ICON_SOON $(format_duration "$upcoming_start") "
+        echo -n " $ICON_SOON $(format_duration "$upcoming_start") "
     else
-        echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR,bold] $ICON_WATCH $(format_duration "$upcoming_start") "
+        echo -n " $ICON_WATCH $(format_duration "$upcoming_start") "
     fi
 fi
 # Output nothing if no meetings within 30 minutes

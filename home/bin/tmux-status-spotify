@@ -9,10 +9,10 @@ source "$(dirname "$0")/tmux-theme"
 ICON_PLAY=$'\uf025'   #  (headphones for playing)
 ICON_PAUSE=$'\uf04c'  #
 
-# Colors
-FG_COLOR="$THEME_FG_DARK"
-BG_PLAYED="$THEME_SAPPHIRE"
-BG_REMAINING="$THEME_BLUE"
+# Colors (light text on dark backgrounds)
+FG_COLOR="$THEME_TEXT"
+BG_PLAYED="#1e2d42"       # Very dark blue (progress played)
+BG_REMAINING="#223752"    # Dark blue (progress remaining)
 
 # Check if Spotify is running
 if ! pgrep -x "Spotify" > /dev/null; then
@@ -76,9 +76,9 @@ fi
 played="${full_text:0:$split_point}"
 remaining="${full_text:$split_point}"
 
-# Build output - played portion in cyan, remaining in blue
+# Build output - played portion in sapphire, remaining in blue (progress bar effect)
 output=""
-[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED,bold]${played}"
-[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING,bold]${remaining}"
+[[ -n "$played" ]] && output+="#[fg=$FG_COLOR,bg=$BG_PLAYED]${played}"
+[[ -n "$remaining" ]] && output+="#[fg=$FG_COLOR,bg=$BG_REMAINING]${remaining}"
 
 echo -n "$output"

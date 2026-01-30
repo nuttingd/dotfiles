@@ -32,16 +32,8 @@ if [[ -z "$badge_count" || "$badge_count" == "0" ]]; then
     exit 0
 fi
 
-# Determine color based on unread count
-if [[ $badge_count -gt 50 ]]; then
-    FG_COLOR="colour203"  # Red - lots of messages
-elif [[ $badge_count -gt 10 ]]; then
-    FG_COLOR="colour229"  # Yellow - moderate
-else
-    FG_COLOR="colour117"  # Blue - few messages
-fi
-
 # Slack icon (Nerd Font)
 ICON=$'\uf198'  #
 
-echo -n "#[fg=$FG_COLOR]$ICON $badge_count#[fg=default]"
+# Return plain text - orchestrator handles theming
+echo -n " $ICON $badge_count "

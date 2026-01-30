@@ -1,24 +1,38 @@
 #!/usr/bin/env bash
 
-# Catppuccin Mocha theme colors for tmux status bar
+# One Dark theme colors for tmux status bar
 # Source this file in component scripts: source "$(dirname "$0")/tmux-theme"
 
-# Base colors
-THEME_BASE="colour234"      # Background
-THEME_SURFACE0="colour236"
+# Base colors (One Dark)
+THEME_BASE="colour234"      # Background (matches tmux status bar)
+THEME_SURFACE0="colour237"
 THEME_SURFACE1="colour238"
-THEME_TEXT="colour251"
+THEME_TEXT="colour250"      # Foreground (#abb2bf)
 
-# Accent colors
-THEME_MAUVE="colour177"     # Username
-THEME_BLUE="colour111"      # Session, active window
-THEME_TEAL="colour122"
-THEME_GREEN="colour120"     # Weather
-THEME_PINK="colour218"      # Calendar
-THEME_SAPPHIRE="colour117"  # Spotify played
-THEME_LAVENDER="colour147"  # Clock
-THEME_YELLOW="colour229"    # Moon
+# One Dark accent colors
+THEME_RED="colour168"       # #e06c75
+THEME_GREEN="colour114"     # #98c379
+THEME_YELLOW="colour180"    # #e5c07b
+THEME_BLUE="colour75"       # #61afef
+THEME_MAGENTA="colour176"   # #c678dd
+THEME_CYAN="colour73"       # #56b6c2
+THEME_ORANGE="colour173"    # #d19a66
+
+# Status bar component colors (darker variants for subtle gradient)
+THEME_PINK="colour127"      # Calendar (dark magenta)
+THEME_PEACH_DARK="colour130" # Email (dark orange)
+THEME_SAPPHIRE="colour31"   # Spotify played (dark cyan)
+THEME_BLUE_DARK="colour24"  # Spotify remaining (darker blue)
+THEME_SKY="colour25"        # Slack (dark blue)
+THEME_LAVENDER="colour61"   # Clock (dark lavender)
+THEME_MAUVE_DARK="colour54" # Moon (dark purple)
+THEME_PURPLE_DARK="colour53" # Battery (dark purple)
 THEME_PEACH="colour216"     # Alerts
 
-# Foreground for light backgrounds
-THEME_FG_DARK="colour234"
+# Foreground colors
+THEME_FG_LIGHT="colour250"  # Light text on dark backgrounds
+THEME_FG_DARK="colour234"   # Dark text on light backgrounds
+
+# Legacy aliases for compatibility
+THEME_MAUVE="$THEME_MAGENTA"
+THEME_TEAL="$THEME_CYAN"

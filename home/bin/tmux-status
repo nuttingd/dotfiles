@@ -16,19 +16,38 @@ SEP=$'\ue0b2'
 # Status bar background
 BAR_BG="$THEME_BASE"
 
-# Component background colors
-# Entry color is used for the incoming chevron, exit color for outgoing
+# Component background colors - Proper RGB gradient
+# Left side: Blue gradient (darkest to lighter)
+# Right side: Purple gradient (darkest to lighter)
 declare -A COMPONENT_BG=(
-    [calendar]="$THEME_PINK"
-    [spotify]="$THEME_SAPPHIRE"
-    [clock]="$THEME_LAVENDER"
-    [moon]=""      # No background, blends with bar
-    [battery]=""   # No background, blends with bar
+    [calendar]="#1a2332"            # Darkest blue
+    [spotify]="#1e2d42"             # Very dark blue
+    [email]="#223752"               # Dark blue
+    [slack]="#264162"               # Medium dark blue
+    [clock]="#2d2342"               # Dark purple
+    [moon]="#372d52"                # Medium dark purple
+    [battery]="#413762"             # Lighter dark purple
+)
+
+# Foreground colors for each component (all use light text on dark backgrounds)
+declare -A COMPONENT_FG=(
+    [calendar]="$THEME_TEXT"        # Light text
+    [spotify]="$THEME_TEXT"         # Light text (handled by component)
+    [email]="$THEME_TEXT"           # Light text
+    [slack]="$THEME_TEXT"           # Light text
+    [clock]="$THEME_TEXT"           # Light text
+    [moon]="$THEME_TEXT"            # Light text
+    [battery]="$THEME_TEXT"         # Light text
 )
 
 # Components with different exit colors (e.g., progress bars)
 declare -A COMPONENT_BG_EXIT=(
-    [spotify]="$THEME_BLUE"
+    [spotify]="#223752"             # Transition within blue gradient
+)
+
+# Components that handle their own formatting (don't apply orchestrator colors)
+declare -A SELF_FORMATTED=(
+    [spotify]=1
 )
 
 mkdir -p "$CACHE_DIR"
@@ -119,11 +138,19 @@ for i in "${!components[@]}"; do
             # Transition from previous component
             output+="#[fg=$bg,bg=$prev_bg]$SEP"
         fi
-        output+="$content"
+        # Apply colors to content (unless component handles its own formatting)
+        if [[ -n "${SELF_FORMATTED[$component]}" ]]; then
+            # Component provides its own formatting (e.g., spotify progress bar)
+            output+="$content"
+        else
+            # Apply orchestrator colors with component-specific foreground
+            fg="${COMPONENT_FG[$component]:-$THEME_TEXT}"
+            output+="#[fg=$fg,bg=$bg,bold]$content"
+        fi
         # Use exit color if defined, otherwise use entry color
         prev_bg="${COMPONENT_BG_EXIT[$component]:-$bg}"
     else
-        # Component has no background (like moon)
+        # Component has no background (renders on bar background)
         if [[ -n "$prev_bg" ]]; then
             # Close previous segment back to bar
             output+="#[fg=$BAR_BG,bg=$prev_bg]$SEP#[fg=default,bg=default]"

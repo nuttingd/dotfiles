@@ -2,14 +2,8 @@
 
 # tmux-status-clock: Date and time display
 
-# Load theme colors
-source "$(dirname "$0")/tmux-theme"
-
-# Colors
-FG_COLOR="$THEME_FG_DARK"
-BG_COLOR="$THEME_LAVENDER"
-
 # Icon (Nerd Font)
 ICON_CLOCK=$'\uf017'  #
 
-echo -n "#[fg=$FG_COLOR,bg=$BG_COLOR,bold] $ICON_CLOCK $(date '+%b %d %Y %l:%M %p %Z') "
+# Return plain text - orchestrator handles theming
+echo -n " $ICON_CLOCK $(date '+%b %d %Y %l:%M %p %Z') "

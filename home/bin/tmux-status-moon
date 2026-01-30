@@ -2,12 +2,6 @@
 
 # tmux-status-moon: Current moon phase
 
-# Load theme colors
-source "$(dirname "$0")/tmux-theme"
-
-# Color
-FG_COLOR="$THEME_YELLOW"
-
 # Calculate moon phase
 # Based on the synodic month (29.53 days)
 # Known new moon: Jan 6, 2000
@@ -26,4 +20,5 @@ phase_index=$((phase_index % 8))
 # Moon phase emojis
 phases=("🌑" "🌒" "🌓" "🌔" "🌕" "🌖" "🌗" "🌘")
 
-echo -n "#[fg=$FG_COLOR]${phases[$phase_index]}#[fg=default]"
+# Return plain text - orchestrator handles theming
+echo -n " ${phases[$phase_index]} "
